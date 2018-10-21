@@ -24,7 +24,7 @@ public class SelfPrint {
 "            sourceCode = sourceCode + qoute + programText[i] + qoute + ',' + newline;",
 "        }",
 "        for(int i = 7; i < programText.length; i++) {",
-"            sourceCode = sourceCode + programText[i] + newline;",
+"            sourceCode = sourcecCode + programText[i] + newline;",
 "        }",
 "        return sourceCode;",
 "    }",
@@ -42,7 +42,7 @@ public class SelfPrint {
             sourceCode = sourceCode + qoute + programText[i] + qoute + ',' + newline;
         }
         for(int i = 7; i < programText.length; i++) {
-            sourceCode = sourceCode + programText[i] + newline;
+            sourceCode = sourcecCode + programText[i] + newline;
         }
         return sourceCode;
     }
