@@ -15,18 +15,15 @@ public class SelfPrint {
 "	};",
 "	private static String getText() {",
 "		char quote = 34;",
-"		StringBuilder sourceCode = new StringBuilder();",
+"		String sourceCode = new String();",
 "		for (int i = 0; i < 7; i++) {",
-"			sourceCode.append(programText[i]);",
-"			sourceCode.append(System.getProperty(\"line.seperator\"));",			
+"			sourceCode = sourceCode + programtext[i] '\\n';",			
 "		}",
 "		for (int i = 0; i < programText.length; i++) {",
-"			sourceCode.append(quote + programText[i] + quote + ',');",
-"			sourceCode.append(System.getProperty(\"line.seperator\"));",		
-"		}\r\n",
+"			sourceCode = sourceCode + qoute + programText[i] + qoute + ',' + '\\n';",		
+"		}",
 "		for(int i = 7; i < programText.length; i++) {",
-"			sourceCode.append(programText[i]);",
-"			sourceCode.append(System.getProperty(\"line.seperator\"));",		
+"			sourceCode = sourcecCode + programText[i] + '\\n';",		
 "		}",
 "		return sourceCode.toString();",
 "	}",
@@ -35,20 +32,17 @@ public class SelfPrint {
 	};	
 	private static String getText() {
 		char quote = 34;
-		StringBuilder sourceCode = new StringBuilder();
+		String sourceCode = new String();
 		for (int i = 0; i < 7; i++) {
-			sourceCode.append(programText[i]);
-			sourceCode.append(System.getProperty("line.seperator"));
+			sourceCode = sourceCode + programText[i] + '\n';
 		}
 		for (int i = 0; i < programText.length; i++) {
-			sourceCode.append(quote + programText[i] + quote + ',');
-			
+			sourceCode = sourceCode + quote + programText[i] + quote + ',' + '\n';			
 		}
 		for(int i = 7; i < programText.length; i++) {
-			sourceCode.append(programText[i]);
-			sourceCode.append(String.format("%n", ""));
+			sourceCode = sourceCode + programText[i] + '\n';
 		}
-		return sourceCode.toString();
+		return sourceCode;
 	}
 	// Ab hier einfuegen verboten
 }
