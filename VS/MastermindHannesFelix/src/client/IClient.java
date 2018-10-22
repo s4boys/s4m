@@ -1,7 +1,8 @@
+package client;
 /**
  * 
  */
-package client;
+
 
 public interface IClient{
 	

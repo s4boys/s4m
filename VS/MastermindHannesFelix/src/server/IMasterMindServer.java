@@ -1,5 +1,6 @@
 package server;
 
+
 import client.IClient;
 
 public interface IMasterMindServer{

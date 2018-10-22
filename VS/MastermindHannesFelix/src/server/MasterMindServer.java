@@ -1,5 +1,6 @@
 package server;
 
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -15,11 +16,11 @@ public class MasterMindServer implements IMasterMindServer {
 		mActiveGames = new ArrayList<IMasterMindGame>(); // Liste aller Sitzungen
 	}
 
-	public int createNewGame(IClient aClient) { // fügt einen Spieler einer Sitzung hinzu
+	public int createNewGame(IClient aClient) { // fï¿½gt einen Spieler einer Sitzung hinzu
 		MasterMindGame myGame = new MasterMindGame();// eine Sitzung
 		myGame.addClient(aClient);
 		myGame.setCreatingClient(aClient);
-		mActiveGames.add(myGame); // fügt Sitzung der Liste hinzu
+		mActiveGames.add(myGame); // fï¿½gt Sitzung der Liste hinzu
 		System.out.println("Game "+myGame.getGameID()+" created by "+aClient.getUsername());
 		return myGame.getGameID();
 	}

@@ -1,5 +1,6 @@
 package client;
 
+
 import java.util.Scanner;
 
 import server.MasterMindServer;
@@ -43,7 +44,6 @@ public class Client implements IClient {
 		Scanner sc = new Scanner(System.in);
 		int inputs[] = new int [4];
 		for(int i = 0; i < 4;i++) {
-			System.out.println("loopiteration: " + i);
 			inputs[i] = sc.nextInt();
 		}
 		return inputs;
