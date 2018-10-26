@@ -19,4 +19,20 @@ public class Rental {
     public Movie getMovie() {
         return movie;
     }
+
+	double getAmount(double lThisAmount) {
+		//Betr�ge f�r jede Zeile berechnen
+		lThisAmount = getMovie().getPrice(lThisAmount, getDaysRented());
+		return lThisAmount;
+	}
+
+	int calcFrequentRenter(int lFrequentRenterPoints) {
+		//Frequent Renter Points
+		lFrequentRenterPoints++;
+		//Bonus Frequent Renter Points
+		if((getMovie().getPriceCode() == NewRelease.PRICECODE) &&
+		    getDaysRented()>1)
+		    lFrequentRenterPoints++;
+		return lFrequentRenterPoints;
+	}
 }

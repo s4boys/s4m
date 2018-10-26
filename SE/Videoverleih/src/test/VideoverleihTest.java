@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 import videoverleih.Customer;
 import videoverleih.IllegalRentalDuration;
 import videoverleih.Movie;
+import videoverleih.NewRelease;
+import videoverleih.Regular;
 import videoverleih.Rental;
 
 public class VideoverleihTest {
@@ -21,7 +23,7 @@ public class VideoverleihTest {
 	@BeforeEach
 	public void createObjects() {
 		customer = new Customer("Gerhard Wanner");
-		movie = new Movie("Matrix 2", 1);
+		movie = new NewRelease("Matrix 2");
 		rental = new Rental(movie, 2);
 		customer.addRental(rental);
 		
