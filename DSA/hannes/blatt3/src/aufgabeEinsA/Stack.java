@@ -46,7 +46,7 @@ public class Stack{
 	int counter;
 	
 	public Stack() {
-	    storage = new Object[100];
+	    storage = new Object[150];
 	    counter = 0; 
 	}
 	
@@ -92,7 +92,7 @@ public class Stack{
 	}
 	
 	public boolean isFull(){		// ist der Stack voll?
-		if(counter == 100) {
+		if(counter == storage.length) {
 			return true;
 		}
 		return false;

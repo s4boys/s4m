@@ -1,5 +1,7 @@
 package aufgabeZwei;
 
+import aufgabeEinsA.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -7,82 +9,82 @@ import java.util.List;
 public class Mouse {
 	Coordinate now;
 	Coordinate last;
+	Coordinate secondLast;
 	boolean hasFoundCheese;
-	Coordinate memories[];
+	Stack path;
+	ArrayList<Coordinate> visited;
 
-	public Mouse() {
+	public Mouse(int x, int y) {
 		this.hasFoundCheese = false;
-		this.now = new Coordinate(0, 0);
-		this.memories = new Coordinate[5 * 17];
-		for (int i = 0; i < memories.length; i++) {
-			memories[i] = new Coordinate();
-		}
+		this.now = new Coordinate(x,y);
+		this.last = new Coordinate(x,y);
+		this.secondLast = new Coordinate(x,y);
+		this.path = new Stack();
+		this.visited = new ArrayList<>();
+		Maze.maze[now.x][now.y] = 'M';
 	}
 
 	public static void main(String[] args) throws InterruptedException {
-		Mouse mickey = new Mouse();
-		while (!mickey.hasFoundCheese) {
+		Mouse mickey = new Mouse(0,0);
+		mickey.path.push(mickey.now);
+		while (!mickey.hasFoundCheese) {			
+
 			mickey.search();
 			for (char[] a : Maze.maze) {
 				System.out.println(Arrays.toString(a));
 			}
 			System.out.println();
-			Thread.sleep(250);
+			Thread.sleep(150);
 
 		}
 	}
 
-	public void checkForCheese() {
-		if (Maze.maze[now.x][now.y] == 'o') {
-			this.hasFoundCheese = true;
-		}
-	}
 
-	// Prioritäten: 1. Unbesucht 2. rechts 3. unten 4. oben 5. links
+
 	public void search() {
-		List<Coordinate> possibleDirections = new ArrayList<>();
-		if (now.y < 16) {
-			possibleDirections.add(new Coordinate(now.x, now.y + 1, this.memories[(now.x * 17) + now.y + 1].visits)); // rechts
-		}
-		if (now.x < 4) {
-			possibleDirections.add(new Coordinate(now.x + 1, now.y, this.memories[((now.x + 1) * 17) + now.y].visits)); // runter
-		}
-		if (now.y > 0) {
-			possibleDirections.add(new Coordinate(now.x, now.y - 1, this.memories[(now.x * 17) + now.y - 1].visits)); // links
-		}
-		if (now.x > 0) {
-			possibleDirections.add(new Coordinate(now.x - 1, now.y, this.memories[((now.x - 1) * 17) + now.y].visits)); // oben
-		}
 
-		// suche am wenigsten besuchte Richtung
-		int newDirection = Integer.MAX_VALUE;
-		Coordinate reallyNewDir = new Coordinate(0,0,0);
-		for (Coordinate c : possibleDirections) {
-			if (Maze.isFieldAccessible(c)) {
-				if (c.visits < newDirection) {
-					newDirection = c.visits;
-					reallyNewDir = c;
-				}
-			}
+		Coordinate right = new Coordinate(now.x, now.y + 1);
+		Coordinate down = new Coordinate(now.x + 1, now.y);
+		Coordinate up = new Coordinate(now.x - 1, now.y);
+		Coordinate left = new Coordinate(now.x, now.y - 1);			
+		
+		if (now.y < 16 && Maze.isFieldAccessible(right)  && unvisited(right)) {
+			now = right;
+		} else if (now.x < 16 && Maze.isFieldAccessible(down)  && unvisited(down)) {
+			now = down;
+		} else if (now.x > 0 && Maze.isFieldAccessible(up)  && unvisited(up)) {
+			now = up;
+		} else if (now.y > 0 && Maze.isFieldAccessible(left)  && unvisited(left)) {
+			now = left;
+		} else {
+			path.pop();			
+			now = (Coordinate)path.pop();
+			
 		}
-		this.last = this.now;
-		this.now = reallyNewDir;
-		this.checkForCheese();
+		visited.add(secondLast);
+		last = secondLast;
+		secondLast = now;
+		
+		checkCheeseFound();
+		
 		Maze.maze[now.x][now.y] = 'M';
 		Maze.maze[last.x][last.y] = '_';
-		this.memories[now.x*17+now.y].visits++;
+		path.push(now);
+	}
 
-		// gehe in eine der besten Richtungen, Priorität : rechts, runter, hoch, links
-//		for (Coordinate c : possibleDirections) {
-//			if (c.visits == newDirection) {
-//				this.last = this.now;
-//				this.now = c;
-//				this.checkForCheese();
-//				Maze.maze[now.x][now.y] = 'M';
-//				Maze.maze[last.x][last.y] = '_';
-//				break;
-//			}
-//		}
+	public void checkCheeseFound() {
+		if (Maze.maze[now.x][now.y] == 'o') {
+			this.hasFoundCheese = true;
+			System.out.println("gefunden");
+		}
+	}
 
+	public boolean unvisited(Coordinate input) {
+		for (Coordinate c : visited) {
+			if (c.x == input.x && c.y == input.y) {
+				return false;
+			}
+		}
+		return true;
 	}
 }
