@@ -37,88 +37,95 @@ package stack;
  *  Zusatzaufgabe: Wie k�nnten Sie die Methode toString ebenfalls mit O(1) realisieren? 
  */
 
-public class Stack{
-	
-	Object[] stack = new Object[100];
+public class Stack {
+
+	Object[] stack = new Object[2];
 	int stackPointer = 0;
-	
+
 	// Implementierung der Methoden hier ...
-	
-	
-	
-	
-	public String version(){		// gibt eine Versionsnummer zur�ck
-		// diese Methode dient dazu, die verschiedenen Implementierungen zu unterscheiden;
+
+	public String version() { // gibt eine Versionsnummer zur�ck
+		// diese Methode dient dazu, die verschiedenen Implementierungen zu
+		// unterscheiden;
 		// f�r jede neue Implementierung muss der Text angepasst werden.
-			return "Aufgabe 1.a - Stack; Implementierung als Array mit Exception-Handling";
-			// return "Version 1.b - Stack; Implementierung als verkettete Liste mit Exception-Handling";
-		}
-	
+		return "Aufgabe 1.a - Stack; Implementierung als Array mit Exception-Handling";
+		// return "Version 1.b - Stack; Implementierung als verkettete Liste mit
+		// Exception-Handling";
+	}
+
 	public Stack() {
 		super();
 	}
 
-	public void empty(){			// leert den Stack
-	this.stackPointer = 0;	
-	}
-	
-	public void push(Object element) throws StackFullException{	// legt ein Element auf den Stack
-		//Methoden ...
-		this.stack[this.stackPointer] = element;
-		this.stackPointer += 1;
+	public void empty() { // leert den Stack
+		this.stackPointer = 0;
 	}
 
-	public Object pop() throws StackEmptyException{				// nimmt ein Element vom Stack
-		//Methoden ...
-		this.stackPointer -= 1;
-		Object element = this.stack[this.stackPointer];
-		return element; 
+	public void push(Object element) throws StackFullException { // legt ein Element auf den Stack
+		// Methoden ...
+		if (!this.isFull()) {
+			this.stack[this.stackPointer] = element;
+			this.stackPointer += 1;
+		} else
+			throw new StackFullException();
 	}
-	
-	public int size(){				// aktuelle Anzahl Elemente in Stack
-		//Methoden ...
-		return this.stackPointer; 
+
+	public Object pop() throws StackEmptyException { // nimmt ein Element vom Stack
+		// Methoden ...
+		if (!this.isEmpty()) {
+			this.stackPointer -= 1;
+			Object element = this.stack[this.stackPointer];
+			return element;
+		} else
+			throw new StackEmptyException();
 	}
-	
-	public boolean isEmpty(){		// ist der Stack leer?
-		//Methoden ...
-		if(this.stackPointer == 0)
+
+	public int size() { // aktuelle Anzahl Elemente in Stack
+		// Methoden ...
+		return this.stackPointer;
+	}
+
+	public boolean isEmpty() { // ist der Stack leer?
+		// Methoden ...
+		if (this.stackPointer == 0)
 			return true; // Dummy-Wert
 		else
 			return false;
 	}
-	
-	public boolean isFull(){		// ist der Stack voll?
-		//Methoden ...
-		
-		return true; // Dummy-Wert
-	}
-	
-	public Object peek() throws StackEmptyException{			// liest oberstes Element vom Stack, 
-									// ohne es zu vom Stack zu entfernen
-		//Methoden ...
-		return this.stack[this.stackPointer-1];
+
+	public boolean isFull() { // ist der Stack voll?
+		// Methoden ...
+		if(this.stackPointer == this.stack.length)
+			return true;
+		else
+			return false;
 	}
 
-	
-	public String toString(){		// Gibt einen String aus, der den Stack repr�sentiert;
-									// Format: Wert1 Wert2 Wert3 [Top-Wert]
-									//	also z.B. 5 8 1 10 [9]
-		//Methoden ...
-		
+	public Object peek() throws StackEmptyException { // liest oberstes Element vom Stack,
+		// ohne es zu vom Stack zu entfernen
+		// Methoden ...
+		if( !this.isEmpty())
+			return this.stack[this.stackPointer - 1];
+		else throw new StackEmptyException();
+	}
+
+	public String toString() { // Gibt einen String aus, der den Stack repr�sentiert;
+								// Format: Wert1 Wert2 Wert3 [Top-Wert]
+								// also z.B. 5 8 1 10 [9]
+		// Methoden ...
+
 		String result = new String();
-		if(this.isEmpty()){
+		if (this.isEmpty()) {
 			result = "[]";
-			
+
 		} else {
-			for(int i = 0; i < this.stackPointer-1; i++)
+			for (int i = 0; i < this.stackPointer - 1; i++)
 				result += this.stack[i] + " ";
-			
+
 			result += "[" + this.peek() + "]";
-			
-			
+
 		}
 		return result; // Dummy-Wert
 	}
-	
+
 }
