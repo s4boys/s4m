@@ -11,4 +11,9 @@ public class Coordinate {
 	public Coordinate() {
 		this(0,0);
 	}
+	
+	@Override
+	public String toString() {
+		return "[" + x + "," + y + "]";
+	}
 }

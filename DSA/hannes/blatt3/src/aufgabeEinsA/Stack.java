@@ -40,79 +40,85 @@ import java.util.Arrays;
  *  Zusatzaufgabe: Wie k�nnten Sie die Methode toString ebenfalls mit O(1) realisieren? 
  */
 
-public class Stack{
-	
-	Object storage[];
-	int counter;
-	
-	public Stack() {
-	    storage = new Object[150];
-	    counter = 0; 
-	}
-	
-	
-	// Implementierung der Methoden hier ...
-	
-	
-	public String version(){		// gibt eine Versionsnummer zur�ck
-		// diese Methode dient dazu, die verschiedenen Implementierungen zu unterscheiden;
-		// f�r jede neue Implementierung muss der Text angepasst werden.
-			return "Aufgabe 1.a - Stack; Implementierung als Array mit Exception-Handling";
-			// return "Version 1.b - Stack; Implementierung als verkettete Liste mit Exception-Handling";
-		}
-	
-	public void empty(){			// leert den Stack
-		counter = 0;
-	}
-	
-	public void push(Object element) throws StackFullException{	// legt ein Element auf den Stack
-		if ( ! this.isFull()) {
-			storage[counter] = element;
-			counter++;
-		} else throw new StackFullException();	
-	}
+public class Stack {
+    private static final int ARRAY_SIZE = 3;
 
-	public Object pop() throws StackEmptyException{				// nimmt ein Element vom Stack
-		if ( ! this.isEmpty()) {
-			counter--;
-			Object temp = storage[counter];
-			return temp;
-		} else throw new StackEmptyException();
-	}
-	
-	public int size(){				// aktuelle Anzahl Elemente in Stack
-		return counter; // Dummy-Wert
-	}
-	
-	public boolean isEmpty(){		// ist der Stack leer?
-		if (counter == 0) {
-			return true;
-		}
-		return false;
-	}
-	
-	public boolean isFull(){		// ist der Stack voll?
-		if(counter == storage.length) {
-			return true;
-		}
-		return false;
-	}
-	
-	public Object peek(){			// liest oberstes Element vom Stack, 
-									// ohne es zu vom Stack zu entfernen
-		return storage[counter - 1]; // Dummy-Wert
-	}
+    Object storage[];
+    int counter;
 
-	// Gibt einen String aus, der den Stack repr�sentiert;
-	// Format: Wert1 Wert2 Wert3 [Top-Wert]
+    public Stack() {
+        storage = new Object[ARRAY_SIZE];
+        counter = 0;
+    }
+
+    // Implementierung der Methoden hier ...
+
+    public String version() {
+        return "Aufgabe 1.a - Stack; Implementierung als Array mit Exception-Handling";
+    }
+
+    public void empty() { // leert den Stack
+        counter = 0;
+    }
+
+    public void push(Object element) throws StackFullException { // legt ein Element auf den Stack
+        if (!this.isFull()) {
+            storage[counter] = element;
+            counter++;
+        } else
+            throw new StackFullException();
+    }
+
+    public Object pop() throws StackEmptyException { // nimmt ein Element vom Stack
+        if (!this.isEmpty()) {
+            counter--;
+            Object temp = storage[counter];
+            return temp;
+        } else
+            throw new StackEmptyException();
+    }
+
+    public int size() { // aktuelle Anzahl Elemente in Stack
+        return counter; // Dummy-Wert
+    }
+
+    public boolean isEmpty() { // ist der Stack leer?
+        if (counter == 0) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isFull() { // ist der Stack voll?
+        if (counter == storage.length) {
+            return true;
+        }
+        return false;
+    }
+
+    public Object peek() throws StackEmptyException{ // liest oberstes Element vom Stack,
+        // ohne es zu vom Stack zu entfernen
+        if(counter > 0) {
+            return storage[counter-1];
+        } else {
+            throw new StackEmptyException();
+        }
+    }
+
+    // Gibt einen String aus, der den Stack repr�sentiert;
+    // Format: Wert1 Wert2 Wert3 [Top-Wert]
 //	also z.B. 5 8 1 10 [9]
-	public String toString(){
-		String result = "";
-		for (int i = 0; i< counter - 1;i++) {
-			result += storage[i] + " ";
-		}
-		result += "[" + storage[counter - 1] + "]";
-		return result; // Dummy-Wert
-	}
-	
+    public String toString() {
+        String result = "";
+        if (!this.isEmpty()) {
+
+            for (int i = 0; i < counter - 1; i++) {
+                result += storage[i] + " ";
+            }
+            result += "[" + storage[counter - 1] + "]";
+        } else {
+            result = "[]";
+        }
+        return result; // Dummy-Wert
+    }
 }

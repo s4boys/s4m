@@ -27,14 +27,14 @@ public class Mouse {
 	public static void main(String[] args) throws InterruptedException {
 		Mouse mickey = new Mouse(0,0);
 		mickey.path.push(mickey.now);
-		while (!mickey.hasFoundCheese) {			
+		while (!mickey.hasFoundCheese && !mickey.path.isEmpty()) {			
 
 			mickey.search();
 			for (char[] a : Maze.maze) {
 				System.out.println(Arrays.toString(a));
 			}
-			System.out.println();
-			Thread.sleep(150);
+			System.out.println(mickey.path.toString());
+			Thread.sleep(250);
 
 		}
 	}
@@ -73,7 +73,7 @@ public class Mouse {
 	}
 
 	public void checkCheeseFound() {
-		if (Maze.maze[now.x][now.y] == 'o') {
+		if (Maze.maze[now.x][now.y] == 'K') {
 			this.hasFoundCheese = true;
 			System.out.println("gefunden");
 		}

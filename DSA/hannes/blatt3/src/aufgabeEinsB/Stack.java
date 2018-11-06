@@ -17,6 +17,8 @@
 package aufgabeEinsB;
 
 import java.util.Arrays;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 /*
  * Aufgabe 1.a - Stack Implementierung als Array mit Exception-Handling
@@ -40,101 +42,121 @@ import java.util.Arrays;
  *  Zusatzaufgabe: Wie k�nnten Sie die Methode toString ebenfalls mit O(1) realisieren? 
  */
 
-public class Stack{
-	
-	Link head; 
+public class Stack {
+	String stringRepresentation = "";
+	Link head;
 	Link tail;
 	int counter;
-	
+
 	public Stack() {
-	    head = new Link();
-	    tail = head;
-	    counter = 0;
+//		tail = new Link();
+		head = new Link();
+//		head.next = tail;
+		counter = 0;
 	}
-	
-	
+
 	// Implementierung der Methoden hier ...
-	
-	
-	public String version(){		// gibt eine Versionsnummer zur�ck
-		// diese Methode dient dazu, die verschiedenen Implementierungen zu unterscheiden;
+
+	public String version() { // gibt eine Versionsnummer zur�ck
+		// diese Methode dient dazu, die verschiedenen Implementierungen zu
+		// unterscheiden;
 		// f�r jede neue Implementierung muss der Text angepasst werden.
-			return "Aufgabe 1.b - Stack; Implementierung als verkettete Liste mit Exception-Handling";
-			// return "Version 1.b - Stack; Implementierung als verkettete Liste mit Exception-Handling";
-		}
-	
-	public void empty(){			// leert den Stack
-	    head = new Link();
-	    counter = 0;
+		return "Aufgabe 1.b - Stack; Implementierung als verkettete Liste mit Exception-Handling";
+		// return "Version 1.b - Stack; Implementierung als verkettete Liste mit
+		// Exception-Handling";
 	}
-	
+
+	public void empty() { // leert den Stack
+//		tail = new Link();
+		head = new Link();
+//		head.next = tail;
+		counter = 0;
+	}
+
 	// keine Exception, "kann" nicht voll werden
-	public void push(Object element) throws StackFullException{	// legt ein Element auf den Stack
-		if (counter == 100) {
-			throw new StackFullException();
-		}
-		if (tail.data == null) {
-			head = new Link(element);
-			tail = head;
-		} else {
-			Link current = new Link(element);
-			tail.next = current;
-			tail = current;
-		}
+	public void push(Object element) throws StackFullException { // legt ein Element auf den Stack
+		head.data = element;
+		Link newHead = new Link();
+		newHead.next = head;
+		head = newHead;
+//		tail.data = element;
+//		tail = head;
+//		head = new Link();
+//		head.next = tail;
+		stringRepresentation = stringRepresentation.replace('[', ' ');
+		stringRepresentation = stringRepresentation.replace(']', ' ');
+		stringRepresentation += "[" + element + "]";
 		counter++;
 	}
 
 	public Object pop() throws StackEmptyException{				// nimmt ein Element vom Stack
-		if(tail == null) {
+		if (counter == 0) {
 			throw new StackEmptyException();
 		}
-		Link result = tail;
-		Link temp = new Link();
-		temp = head;
-		while(temp.next != tail) {
-			temp = temp.next;
-		}
-		tail = temp;
-		tail.next = null;
+		Link result = head.next;
+		head = result;
+		
+		if(counter == 1) {
+			stringRepresentation = "";
+		}  
+		stringRepresentation = stringRepresentation.replaceAll("(\\d+)\\s+\\[\\d+\\]", "[$1]");
 		counter--;
 		return result.data;
 	}
-	
-	public int size(){				// aktuelle Anzahl Elemente in Stack
+
+	public int size() { // aktuelle Anzahl Elemente in Stack
 		return counter; // Dummy-Wert
 	}
-	
-	public boolean isEmpty(){		// ist der Stack leer?
+
+	public boolean isEmpty() { // ist der Stack leer?
 		if (counter == 0) {
 			return true;
 		}
 		return false;
 	}
-	
-	public boolean isFull(){		// ist der Stack voll?
-		if(counter == 100) {
+
+	public boolean isFull() { // ist der Stack voll?
+		if (counter == 100) {
 			return true;
 		}
 		return false;
 	}
-	
-	public Object peek(){			// liest oberstes Element vom Stack, 
-		return tail.data;			// ohne es zu vom Stack zu entfernen		
+
+	public Object peek() { // liest oberstes Element vom Stack,
+		return tail.data; // ohne es zu vom Stack zu entfernen
 	}
 
 	// Gibt einen String aus, der den Stack repr�sentiert;
 	// Format: Wert1 Wert2 Wert3 [Top-Wert]
 //	also z.B. 5 8 1 10 [9]
-	public String toString(){
-		String result = "";
-		Link temp;
-		temp = head;
-		while(temp.next != null) {
-			result += temp.data;
-		}
-		result = result.substring(0, result.length());
-		result += "[" + temp.data + "]";
-		return result; // Dummy-Wert
+	public String toString() {
+		return stringRepresentation;
 	}
-	
+
 }
+//if(tail == null) {
+//	throw new StackEmptyException();
+//}
+//Link result = tail;
+//Link temp = new Link();
+//temp = head;
+//while(temp.next != tail) {
+//	temp = temp.next;
+//}
+//tail = temp;
+//tail.next = null;
+//counter--;
+//return result.data;
+
+//do {
+//	stringRepresentation = stringRepresentation.substring(0, stringRepresentation.length()-1);
+//	if(stringRepresentation.length() == 0) {
+//		return "[" + result.data + "]";
+//	}
+//	do {
+//		temp += stringRepresentation.charAt(stringRepresentation.length()-1);
+//		if(stringRepresentation.length() == 0) {
+//			return "[" + result.data + "]";
+//		}
+//	} while (stringRepresentation.charAt(stringRepresentation.length()-1) != ' ');
+//} while (stringRepresentation.charAt(stringRepresentation.length()-1) != ' ');
