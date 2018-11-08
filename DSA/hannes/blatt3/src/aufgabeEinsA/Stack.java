@@ -41,7 +41,7 @@ import java.util.Arrays;
  */
 
 public class Stack {
-    private static final int ARRAY_SIZE = 3;
+    private static final int ARRAY_SIZE = 150;
 
     Object storage[];
     int counter;
@@ -83,22 +83,16 @@ public class Stack {
     }
 
     public boolean isEmpty() { // ist der Stack leer?
-        if (counter == 0) {
-            return true;
-        }
-        return false;
+        return (counter == 0);
     }
 
     public boolean isFull() { // ist der Stack voll?
-        if (counter == storage.length) {
-            return true;
-        }
-        return false;
+        return (counter == storage.length);
     }
 
     public Object peek() throws StackEmptyException{ // liest oberstes Element vom Stack,
         // ohne es zu vom Stack zu entfernen
-        if(counter > 0) {
+        if(!isEmpty()) {
             return storage[counter-1];
         } else {
             throw new StackEmptyException();

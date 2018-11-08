@@ -25,10 +25,7 @@ public class Maze {
 	}
 
 	public static boolean isFieldCheese(Coordinate c) {
-		if (maze[c.x][c.y] == 'o') {
-			return true;
-		}
-		return false;
+		return (maze[c.x][c.y] == 'o');
 	}
 
 }
