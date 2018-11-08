@@ -34,8 +34,12 @@ def place_cheeses(labyrinth, rows, columns):
             labyrinth[r][c] = Tile.CHEESE
     return labyrinth
 
-def move(lab, pos, movestack, locked_moves):
+def move(lab, pos, movestack):
     if lab[pos[0]][pos[1]] != Tile.CHEESE:
+
+        allowed_tiles = set()
+        allowed_tiles.add(Tile.CHEESE)
+        allowed_tiles.add(Tile.FLOOR)
 
         right = "right"
         left = "left"
@@ -43,43 +47,43 @@ def move(lab, pos, movestack, locked_moves):
         down = "down"
 
         # attempt to move right
-        if pos[1] < len(lab[0]) and lab[pos[0]][pos[1]+1] == Tile.FLOOR and right not in locked_moves:
+        if pos[1] < len(lab[0])-1 and lab[pos[0]][pos[1]+1] in allowed_tiles:
             movestack.append(right)
-            locked_moves.clear()
-            locked_moves.add(left)
             return [pos[0], pos[1]+1]
 
         # attempt to move down
-        elif pos[0] < len(lab) and lab[pos[0]+1][pos[1]] == Tile.FLOOR and down not in locked_moves:
+        elif pos[0] < len(lab)-1 and lab[pos[0]+1][pos[1]] in allowed_tiles:
             movestack.append(down)
-            locked_moves.clear()
-            locked_moves.add(up)
             return [pos[0]+1, pos[1]]
 
         # attempt to move left
-        elif pos[1] > 0 and lab[pos[0]][pos[1]-1] == Tile.FLOOR and left not in locked_moves:
+        elif pos[1] > 0 and lab[pos[0]][pos[1]-1] in allowed_tiles:
             movestack.append(left)
-            locked_moves.clear()
-            locked_moves.add(right)
             return [pos[0], pos[1]-1]
 
         # attempt to move up
-        elif pos[0] > 0 and lab[pos[0]-1][pos[1]] == Tile.FLOOR and up not in locked_moves:
+        elif pos[0] > 0 and lab[pos[0]-1][pos[1]] in allowed_tiles:
             movestack.append(up)
-            locked_moves.clear()
-            locked_moves.add(down)
             return [pos[0]-1, pos[1]]
 
         else:
-            # do stuff with the movestack
-            moveback()
+            print("going back")
+            last_move = movestack.pop()
 
-def moveback():
-    print("gotta move back")
+            if last_move == right:
+                return [pos[0], pos[1]-1]
+
+            if last_move == down:
+                return [pos[0]-1, pos[1]]
+            
+            if last_move == left:
+                return [pos[0], pos[1]+1]
+
+            if last_move == up:
+                return [pos[0]+1, pos[1]]
 
 def setup():
     # ugly but functional
-    # might as well be haskell
 
     lab = labyrinth(5, 17)
     lab = create_wall(lab, 0, 7)
@@ -101,14 +105,13 @@ def main():
     print("setup finished")
     position = [0,0]
     movestack = []
-    locked_moves = set()
     print("state initialised")
 
     while mylab[position[0]][position[1]] != Tile.CHEESE:
-        position = move(mylab, position, movestack, locked_moves)
+        mylab[position[0]][position[1]] = Tile.VISITED
+        position = move(mylab, position, movestack)
         print(position)
         # print(movestack)
-        sleep(0.5)
     
     print("Cheese found at:")
     print(position)
