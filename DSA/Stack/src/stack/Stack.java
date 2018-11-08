@@ -39,7 +39,7 @@ package stack;
 
 public class Stack {
 
-	Object[] stack = new Object[2];
+	Object[] stack = new Object[100];
 	int stackPointer = 0;
 
 	// Implementierung der Methoden hier ...
