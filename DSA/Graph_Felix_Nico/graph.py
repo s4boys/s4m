@@ -26,17 +26,30 @@ class Graph:
         """Returns all edges connected to `node`. Does not mutate self."""
         return {k: v for k,v in self.edges.items() if k.source == node or k.dest == node}
 
+    def nodes_connecting(self, node):
+        
+
     def breadth_first_search(self):
         """Breitensuche"""
 
         print("not yet implemented")
         #stub
 
-    def depth_first_search(self):
+    def depth_first_search(self, node):
         """Tiefensuche"""
+        visited = set()
+        visited.add(node)
+        for nodes in self.edges_connecting(node):
+            if nodes not in visited:
+                self.depth_first_search(nodes)
+        return visited
 
-        print("not yet implemented")
-        #stub
+
+    def is_euler_graph(self):
+        """Checks for euler graph"""
+        iseuler = False
+        
+
 
     def __str__(self):
         l = []
@@ -44,6 +57,7 @@ class Graph:
             l.append("from {0} to {1}: weight {2} \n".format(key.source, key.dest, value))
         
         return "".join(l)
+
 
 
 def main():
@@ -72,10 +86,12 @@ def main():
     for tpl in edges:
         g.add_edge(tpl[0], tpl[1])
 
-    print(g)
+    # print(g)
     print(g.edges_connecting('A'))
-
+    # print(g.edges[('A','B')])
+    # print(g.depth_first_search('A'))
     print("done.")
+
 
 if __name__ == "__main__":
     main()
