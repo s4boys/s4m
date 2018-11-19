@@ -41,7 +41,6 @@ package stack;
 public class Stack{
 	String output = "";
 	Link head;
-	Link tail;
 	int index;
 	final int MAX = 100;
 	
@@ -50,7 +49,6 @@ public class Stack{
 	public Stack() {
 		super();
 		this.head = new Link();
-		this.tail = new Link();
 		this.index = 0;
 		
 	}

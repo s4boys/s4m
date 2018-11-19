@@ -58,26 +58,26 @@ public class Stack {
 	}
 
 	public void empty() { // leert den Stack
-		this.stackPointer = 0;
+		this.stackPointer = 0;		// setzt Stackpointer auf Index 0 zurück
 	}
 
 	public void push(Object element) throws StackFullException { // legt ein Element auf den Stack
 		// Methoden ...
-		if (!this.isFull()) {
-			this.stack[this.stackPointer] = element;
-			this.stackPointer += 1;
+		if (!this.isFull()) {									// testet ob Stack voll ist 
+			this.stack[this.stackPointer] = element;			// wenn nein -> element einfügen
+			this.stackPointer += 1;								// und Stackpointer erhöhen
 		} else
-			throw new StackFullException();
+			throw new StackFullException();						// wenn ja -> Exception
 	}
 
 	public Object pop() throws StackEmptyException { // nimmt ein Element vom Stack
 		// Methoden ...
-		if (!this.isEmpty()) {
-			this.stackPointer -= 1;
+		if (!this.isEmpty()) {								// testet ob der Stack leer ist
+			this.stackPointer -= 1;							// wenn nein -> Stackpointer zurücksetzten 
 			Object element = this.stack[this.stackPointer];
-			return element;
-		} else
-			throw new StackEmptyException();
+			return element;					
+		} else									
+			throw new StackEmptyException();				// wenn ja -> Exception
 	}
 
 	public int size() { // aktuelle Anzahl Elemente in Stack
@@ -104,7 +104,7 @@ public class Stack {
 	public Object peek() throws StackEmptyException { // liest oberstes Element vom Stack,
 		// ohne es zu vom Stack zu entfernen
 		// Methoden ...
-		if( !this.isEmpty())
+		if(!this.isEmpty())
 			return this.stack[this.stackPointer - 1];
 		else throw new StackEmptyException();
 	}
