@@ -29,53 +29,33 @@ class Graph:
         """Returns all edges connected to `node`. Does not mutate self."""
         return {k: v for k,v in self.edges.items() if k.source == node or k.dest == node}
 
-    def get_connecting_nodes(self, node):
-        connecting_nodes = list()
+    def connected_nodes(self, node):
+        connected = list()
         for edges in self.edges_from(node):
-            connecting_nodes.append(edges.dest)
+            connected.append(edges.dest)
         for edges in self.edges_to(node):
-            connecting_nodes.append(edges.source)
-        return connecting_nodes
+            connected.append(edges.source)
+        return connected
 
-    def get_grade(self, node):
-        return len(self.get_connecting_nodes(node))
+    def degree(self, node):
+        return len(self.edges_connecting(node))
 
     def breadth_first_search(self, node, visited=list()):
         """Breitensuche"""
         queue = [node]
         while queue:
-<<<<<<< HEAD
-            w = queue.pop
-            visited.add(w)
-            for edge_from, edge_to in zip(self.edges_from(node), self.edges_to(node)):
-                if edge_from.dest not in visited:
-                    queue.append(edge_from.dest)
-                if edge_to.src not in visited:
-                    queue.append(edge_to.src)
-=======
             vertex = queue.pop(0)
             if vertex not in visited:
                 visited.append(vertex)
                 try:
-                    queue.extend(self.get_connecting_nodes(vertex).remove(visited))
+                    queue.extend(self.connected_nodes(vertex).remove(visited))
                 except:
-                    queue.extend(self.get_connecting_nodes(vertex))
->>>>>>> ae26fedf20f420b4f63d9f02c53ea8aaabb96ec3
+                    queue.extend(self.connected_nodes(vertex))
+
         return visited
-            # for other_node_from, other_node_to in zip(self.edges_from(node), self.edges_to(node)):
-            #     if other_node_from.dest not in visited:
-            #         queue.append[other_node_from.dest]
-            #     if other_node_to.src not in visited:
-            #         queue.append[other_node_to.src]
-            
 
-
-        print("not yet implemented")
-        #stub
-
-    def depth_first_search(self, node, visited=None):
+    def depth_first_search(self, node, visited):
         """Tiefensuche"""
-<<<<<<< HEAD
         print(node)
         visited.add(node)
 
@@ -93,25 +73,6 @@ class Graph:
         """Wrapper around the recursive depth_first_search"""
         visited=set()
         return self.depth_first_search(node, visited)                
-=======
-        if visited is None:
-            visited = list()
-        visited.append(node)
-        for nodes in self.get_connecting_nodes(node):
-            if nodes not in visited:
-                self.depth_first_search(nodes, visited)
-        return visited
-
-        # for other_node_from, other_node_to in itertools.zip_longest(self.edges_from(node),self.edges_to(node)):
-        #     print("other from:", other_node_from)
-        #     print("other to:", other_node_to)
-        #     if other_node_from is not None:
-        #         if other_node_from.dest not in visited:
-        #             self.depth_first_search(other_node_from, visited)
-        #     if other_node_to is not None:
-        #         if other_node_to.src not in visited:
-        #             self.depth_first_search(other_node_to, visited)
->>>>>>> ae26fedf20f420b4f63d9f02c53ea8aaabb96ec3
 
     def is_euler_graph(self):
         """Checks for euler graph"""
@@ -158,28 +119,12 @@ def main():
     # print(g)
     # print(g.edges_connecting('A'))
     # print(g.edges[('A','B')])
-<<<<<<< HEAD
-    g.depth_first_search_wrapper('A')
-=======
-    # visited = set()
-    # for key in g.depth_first_search('A', visited):
-    #    print(key)
->>>>>>> ae26fedf20f420b4f63d9f02c53ea8aaabb96ec3
-    # print(g.depth_first_search('A'))
-    print(g.get_connecting_nodes('A'))
-    print(g.get_connecting_nodes('B'))
-    print(g.get_connecting_nodes('C'))
-    print(g.get_connecting_nodes('D'))
-    print(g.get_connecting_nodes('E'))
-    print(g.get_connecting_nodes('F'))
-    print(g.get_connecting_nodes('G'))
-    print(g.get_connecting_nodes('H'))
-    print(g.get_connecting_nodes('I'))
-    print(g.get_connecting_nodes('J'))
-    print(g.get_connecting_nodes('K'))
 
-    print(g.depth_first_search('A'))
+    print(g)
+
+    g.depth_first_search_wrapper('A')
     print(g.breadth_first_search('A'))
+    print(g.degree('A'))
     print("done.")
 
 
