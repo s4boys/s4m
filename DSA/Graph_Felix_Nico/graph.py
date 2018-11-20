@@ -29,11 +29,16 @@ class Graph:
         """Returns all edges connected to `node`. Does not mutate self."""
         return {k: v for k,v in self.edges.items() if k.source == node or k.dest == node}
 
-    def get_connecting_nodes(self, nodename):
+    def get_connecting_nodes(self, node):
         connecting_nodes = list()
-        for edges in self.edges_from(nodename):
+        for edges in self.edges_from(node):
             connecting_nodes.append(edges.dest)
+        for edges in self.edges_to(node):
+            connecting_nodes.append(edges.source)
         return connecting_nodes
+
+    def get_grade(self, node):
+        return len(self.get_connecting_nodes(node))
 
     def breadth_first_search(self, node, visited=list()):
         """Breitensuche"""
@@ -110,6 +115,7 @@ def main():
         (Edge('D','K'),10),
         (Edge('E','I'),9),
         (Edge('F','I'),1),
+        (Edge('F','G'),2),
         (Edge('G','J'),6),
         (Edge('H','K'),3),
         (Edge('I','J'),2),
@@ -126,6 +132,17 @@ def main():
     # for key in g.depth_first_search('A', visited):
     #    print(key)
     # print(g.depth_first_search('A'))
+    print(g.get_connecting_nodes('A'))
+    print(g.get_connecting_nodes('B'))
+    print(g.get_connecting_nodes('C'))
+    print(g.get_connecting_nodes('D'))
+    print(g.get_connecting_nodes('E'))
+    print(g.get_connecting_nodes('F'))
+    print(g.get_connecting_nodes('G'))
+    print(g.get_connecting_nodes('H'))
+    print(g.get_connecting_nodes('I'))
+    print(g.get_connecting_nodes('J'))
+    print(g.get_connecting_nodes('K'))
 
     print(g.depth_first_search('A'))
     print(g.breadth_first_search('A'))
