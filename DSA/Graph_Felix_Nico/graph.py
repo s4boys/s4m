@@ -61,7 +61,12 @@ class Graph:
                 if edge_to.source not in visited:
                     self.depth_first_search(edge_to.source, visited)
 
-        return visited                
+        return visited
+        
+    def depth_first_search_wrapper(self, node):
+        """Wrapper around the recursive depth_first_search"""
+        visited=set()
+        return self.depth_first_search(node, visited)                
 
     def is_euler_graph(self):
         """Checks for euler graph"""
@@ -107,8 +112,7 @@ def main():
     # print(g)
     # print(g.edges_connecting('A'))
     # print(g.edges[('A','B')])
-    visited = set()
-    g.depth_first_search('A', visited)
+    g.depth_first_search_wrapper('A')
     # print(g.depth_first_search('A'))
     print("done.")
 
