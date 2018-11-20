@@ -36,11 +36,11 @@ class Graph:
         while queue:
             w = queue.pop
             visited.add(w)
-            for other_node_from, other_node_to in zip(self.edges_from(node), self.edges_to(node)):
-                if other_node_from.dest not in visited:
-                    queue.append[other_node_from.dest]
-                if other_node_to.src not in visited:
-                    queue.append[other_node_to.src]
+            for edge_from, edge_to in zip(self.edges_from(node), self.edges_to(node)):
+                if edge_from.dest not in visited:
+                    queue.append(edge_from.dest)
+                if edge_to.src not in visited:
+                    queue.append(edge_to.src)
         return visited
             
 
@@ -50,23 +50,22 @@ class Graph:
 
     def depth_first_search(self, node, visited):
         """Tiefensuche"""
+        print(node)
         visited.add(node)
 
-        for other_node_from, other_node_to in itertools.zip_longest(self.edges_from(node),self.edges_to(node)):
-            print("other from:", other_node_from)
-            print("other to:", other_node_to)
-            if other_node_from is not None:
-                if other_node_from.dest not in visited:
-                    self.depth_first_search(other_node_from, visited)
-            if other_node_to is not None:
-                if other_node_to.src not in visited:
-                    self.depth_first_search(other_node_to, visited)
+        for edge_from, edge_to in itertools.zip_longest(self.edges_from(node),self.edges_to(node)):
+            if edge_from is not None:
+                if edge_from.dest not in visited:
+                    self.depth_first_search(edge_from.dest, visited)
+            if edge_to is not None:
+                if edge_to.source not in visited:
+                    self.depth_first_search(edge_to.source, visited)
 
         return visited                
 
     def is_euler_graph(self):
         """Checks for euler graph"""
-        iseuler = False
+        is_euler = False
         
 
 
@@ -109,8 +108,7 @@ def main():
     # print(g.edges_connecting('A'))
     # print(g.edges[('A','B')])
     visited = set()
-    for key in g.depth_first_search('A', visited):
-        print(key)
+    g.depth_first_search('A', visited)
     # print(g.depth_first_search('A'))
     print("done.")
 
