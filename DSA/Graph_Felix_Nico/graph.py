@@ -29,40 +29,54 @@ class Graph:
         """Returns all edges connected to `node`. Does not mutate self."""
         return {k: v for k,v in self.edges.items() if k.source == node or k.dest == node}
 
-    def breadth_first_search(self, node):
+    def get_connecting_nodes(self, nodename):
+        connecting_nodes = list()
+        for edges in self.edges_from(nodename):
+            connecting_nodes.append(edges.dest)
+        return connecting_nodes
+
+    def breadth_first_search(self, node, visited=list()):
         """Breitensuche"""
-        visited = set()
         queue = [node]
         while queue:
-            w = queue.pop
-            visited.add(w)
-            for other_node_from, other_node_to in zip(self.edges_from(node), self.edges_to(node)):
-                if other_node_from.dest not in visited:
-                    queue.append[other_node_from.dest]
-                if other_node_to.src not in visited:
-                    queue.append[other_node_to.src]
+            vertex = queue.pop(0)
+            if vertex not in visited:
+                visited.append(vertex)
+                try:
+                    queue.extend(self.get_connecting_nodes(vertex).remove(visited))
+                except:
+                    queue.extend(self.get_connecting_nodes(vertex))
         return visited
+            # for other_node_from, other_node_to in zip(self.edges_from(node), self.edges_to(node)):
+            #     if other_node_from.dest not in visited:
+            #         queue.append[other_node_from.dest]
+            #     if other_node_to.src not in visited:
+            #         queue.append[other_node_to.src]
             
 
 
         print("not yet implemented")
         #stub
 
-    def depth_first_search(self, node, visited):
+    def depth_first_search(self, node, visited=None):
         """Tiefensuche"""
-        visited.add(node)
+        if visited is None:
+            visited = list()
+        visited.append(node)
+        for nodes in self.get_connecting_nodes(node):
+            if nodes not in visited:
+                self.depth_first_search(nodes, visited)
+        return visited
 
-        for other_node_from, other_node_to in itertools.zip_longest(self.edges_from(node),self.edges_to(node)):
-            print("other from:", other_node_from)
-            print("other to:", other_node_to)
-            if other_node_from is not None:
-                if other_node_from.dest not in visited:
-                    self.depth_first_search(other_node_from, visited)
-            if other_node_to is not None:
-                if other_node_to.src not in visited:
-                    self.depth_first_search(other_node_to, visited)
-
-        return visited                
+        # for other_node_from, other_node_to in itertools.zip_longest(self.edges_from(node),self.edges_to(node)):
+        #     print("other from:", other_node_from)
+        #     print("other to:", other_node_to)
+        #     if other_node_from is not None:
+        #         if other_node_from.dest not in visited:
+        #             self.depth_first_search(other_node_from, visited)
+        #     if other_node_to is not None:
+        #         if other_node_to.src not in visited:
+        #             self.depth_first_search(other_node_to, visited)
 
     def is_euler_graph(self):
         """Checks for euler graph"""
@@ -108,10 +122,13 @@ def main():
     # print(g)
     # print(g.edges_connecting('A'))
     # print(g.edges[('A','B')])
-    visited = set()
-    for key in g.depth_first_search('A', visited):
-        print(key)
+    # visited = set()
+    # for key in g.depth_first_search('A', visited):
+    #    print(key)
     # print(g.depth_first_search('A'))
+
+    print(g.depth_first_search('A'))
+    print(g.breadth_first_search('A'))
     print("done.")
 
 
