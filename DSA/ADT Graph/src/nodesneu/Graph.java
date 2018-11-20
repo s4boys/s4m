@@ -1,4 +1,4 @@
-package nodes;
+package nodesneu;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -39,41 +39,44 @@ public class Graph {
 		return true;
 	}
 	
-	public void tiefensuche(Vertex nameStartknoten) {
-		nameStartknoten.setVisited(true);
-		System.out.println(nameStartknoten);
+	public void tiefensuche(String nameStartknoten) {
+		Vertex vert = getNodeFromName(nameStartknoten);
+		vert.setVisited(true);
+		System.out.println(vert);
 		for (Edge e : kanten) {
-			if (e.v0 == nameStartknoten && !e.v1.visited) {
-				tiefensuche(e.v1);
-			} else if (e.v1 == nameStartknoten && !e.v0.visited) {
-				tiefensuche(e.v0);
+			if (e.v0 == vert && !e.v1.visited) {
+				tiefensuche(e.v1.name);
+			} else if (e.v1 == vert && !e.v0.visited) {
+				tiefensuche(e.v0.name);
 			}
 		}
 	}
 	
-	public void breitensuche(Vertex nameStartknoten) {
+	public void breitensuche(String nameStartknoten) {
+		Vertex vert = getNodeFromName(nameStartknoten);
 		Queue<Vertex> q = new LinkedList<>();
-	    q.add(nameStartknoten);
+	    q.add(vert);
 		while(!q.isEmpty()) {
 			Vertex node = q.remove();
 			System.out.println(node);
 			node.visited = true;
-			for (Edge e1 : kanten) {
-				if(e1.v0 == node && !e1.v1.visited && !q.contains(e1.v1)) {
-					q.add(e1.v1);
-				} else if (e1.v1 == node && !e1.v0.visited && !q.contains(e1.v0)) {
-					q.add(e1.v0);
+			for (Edge e : kanten) {
+				if(e.v0 == node && !e.v1.visited && !q.contains(e.v1)) {
+					q.add(e.v1);
+				} else if (e.v1 == node && !e.v0.visited && !q.contains(e.v0)) {
+					q.add(e.v0);
 				}
 			}
 		}
 	}
 	
 	Vertex getNodeFromName(String name) {
-		kanten.contains(name);
-		
-		
-		return null;
-		
+		for (Vertex v : knoten) {
+			if (v.name.equals(name)) {
+				return v;
+			}
+		}
+		throw new IllegalVertexException();
 	}
 	
 	@Override
