@@ -23,7 +23,7 @@ public class Graph {
 	   Edge e;
 	   while(lit.hasNext()) {
 		   e = lit.next();
-		   if(e.v0.name.equals(knotenname) || e.v1.name.equals(knotenname)) {
+		   if(e.v0.getName().equals(knotenname) || e.v1.getName().equals(knotenname)) {
 			   grad++;
 		   }
 	   }
@@ -32,7 +32,7 @@ public class Graph {
 	
 	boolean isEulerGraph() {
 		for(Vertex v : knoten) {
-			if (getGrad(v.name)%2 != 0) {
+			if (getGrad(v.getName())%2 != 0) {
 				return false;
 			}
 		}
@@ -42,12 +42,12 @@ public class Graph {
 	public void tiefensuche(String nameStartknoten) {
 		Vertex vert = getNodeFromName(nameStartknoten);
 		vert.setVisited(true);
-		System.out.println(vert);
+		System.out.print(vert + " ");
 		for (Edge e : kanten) {
-			if (e.v0 == vert && !e.v1.visited) {
-				tiefensuche(e.v1.name);
-			} else if (e.v1 == vert && !e.v0.visited) {
-				tiefensuche(e.v0.name);
+			if (e.v0 == vert && !e.v1.isVisited()) {
+				tiefensuche(e.v1.getName());
+			} else if (e.v1 == vert && !e.v0.isVisited()) {
+				tiefensuche(e.v0.getName());
 			}
 		}
 	}
@@ -58,12 +58,12 @@ public class Graph {
 	    q.add(vert);
 		while(!q.isEmpty()) {
 			Vertex node = q.remove();
-			System.out.println(node);
-			node.visited = true;
+			System.out.print(node + " ");
+			node.setVisited(true);
 			for (Edge e : kanten) {
-				if(e.v0 == node && !e.v1.visited && !q.contains(e.v1)) {
+				if(e.v0 == node && !e.v1.isVisited() && !q.contains(e.v1)) {
 					q.add(e.v1);
-				} else if (e.v1 == node && !e.v0.visited && !q.contains(e.v0)) {
+				} else if (e.v1 == node && !e.v0.isVisited() && !q.contains(e.v0)) {
 					q.add(e.v0);
 				}
 			}
@@ -72,7 +72,7 @@ public class Graph {
 	
 	Vertex getNodeFromName(String name) {
 		for (Vertex v : knoten) {
-			if (v.name.equals(name)) {
+			if (v.getName().equals(name)) {
 				return v;
 			}
 		}

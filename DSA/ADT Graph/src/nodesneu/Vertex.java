@@ -2,9 +2,9 @@ package nodesneu;
 
 public class Vertex {
 	static int counter=0;
-	int id;
-	String name;
-	boolean visited;
+	private int id;
+	private String name;
+	private boolean visited;
 	
 	public Vertex(String name) {
 		this.id = ++counter;

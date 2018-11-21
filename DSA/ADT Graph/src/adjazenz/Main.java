@@ -6,10 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.ListIterator;
-import java.util.Set;
+import java.util.Map;
 
 public class Main {
 
@@ -20,63 +18,58 @@ public class Main {
 			int size = Integer.parseInt(br.readLine());
 			String[] names = br.readLine().split(", ");
 			HashMap<Vertex, ArrayList<Vertex>> knoten = new HashMap<>();
-//			ArrayList<Vertex> knoten = new ArrayList<>();
 			for (String name : names) {
 				knoten.put(new Vertex(name), new ArrayList<Vertex>());
-//				knoten.get(name).add(new Vertex(name));
 			}
-//			ArrayList<Edge> kanten= new ArrayList<>();
 			String line;
-			
-			Set<Vertex> keyset = knoten.keySet();
-			for ( Vertex v : keyset) {
-				int id = v.getId();
-				String[] array = line.split(" ");
-				if (Integer.parseInt(array[0]) == id) {
-					knoten.get(v).add()
-				}
-			}
-			
-			
 			while((line = br.readLine()) != null) {
 				String[] array = line.split(" ");
-				getVertex(getVertex(array[0], knoten), knoten)
-				knoten.get(new Vertex(array[0]).add(new Vertex(array[1])));
-				double[] values = Arrays.asList(array).stream().mapToDouble(Double::parseDouble).toArray();
-				
-//				kanten.add(new Edge(getVertex((int) values[0], knoten), getVertex((int) values[1], knoten), values[2]));
+				Vertex alpha = getVertex(Integer.parseInt(array[0]), knoten);
+				Vertex beta = getVertex(Integer.parseInt(array[1]), knoten);
+				knoten.get(alpha).add(beta);
+				knoten.get(beta).add(alpha);
 			}
-			
-			
-			
-			
-			Graph g = new Graph(knoten, kanten, size);
+			Graph g = new Graph(knoten, size);
+			System.out.println("Eulergraph? "  + g.isEulerGraph());
+			System.out.println("Grad von A: " + g.getGrad("A"));
+			System.out.print("Breitensuche: ");
+			g.breitensuche("A");
+			System.out.println();
+			clearVertices(knoten);
+			System.out.print("Tiefensuche: ");
 			g.tiefensuche("A");
+			System.out.println("\nGraph:");
 			System.out.println(g);
+			
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 		try {
 			br.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
 	}
 	
-	public static Vertex getVertex(int id, ArrayList<Vertex> knoten) {
-		ListIterator<Vertex> lit = knoten.listIterator();
-		while(lit.hasNext()) {
-			Vertex v = lit.next();
+	//sucht id aus Knotenmap
+	public static Vertex getVertex(int id, HashMap<Vertex, ArrayList<Vertex>> knoten) {
+		for(Map.Entry<Vertex, ArrayList<Vertex>> e : knoten.entrySet()) {
+			Vertex v = (Vertex)	e.getKey();
 			if(v.getId() == id) {
 				return v;
 			} 
 		}
 		throw new IllegalVertexException();
+	}
+	
+	//setzt alle auf visited = false
+	public static void clearVertices(HashMap<Vertex, ArrayList<Vertex>> knoten) {
+		for (Map.Entry<Vertex, ArrayList<Vertex>> e : knoten.entrySet()) {
+			Vertex v = (Vertex) e.getKey();
+			v.setVisited(false);
+		}		
 	}
 }
