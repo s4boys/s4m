@@ -1,4 +1,4 @@
-package adjazenz;
+package adjazenzHannes;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -73,7 +73,7 @@ public class Graph {
     public void tiefensuche(String name) {
         Vertex currentVertex = getNodeFromName(name);
         currentVertex.setVisited(true);
-        System.out.println("Aktuelle Position: " + name);
+        System.out.print(name + " ");
         for (Edge e : currentVertex.getNeighbours()) {
             if (!e.getDestination().isVisited()) {
                 tiefensuche(e.getDestination().getName());
@@ -88,7 +88,7 @@ public class Graph {
         while (!q.isEmpty()) {
             Vertex v = q.remove();
             v.setVisited(true);
-            System.out.println("Aktuelle Position: " + v.getName());
+            System.out.print(v.getName() + " ");
             for (Edge e : v.getNeighbours()) {
                 if (!e.getDestination().isVisited() && !q.contains(e.getDestination())) {
                     q.add(e.getDestination());
@@ -97,7 +97,7 @@ public class Graph {
         }
     }
 
-    Vertex getNodeFromId(int id) {
+    Vertex getNodeFromId(int id) throws IllegalVertexException {
         for (Vertex v : knoten) {
             if (v.getId() == id) {
                 return v;
@@ -106,7 +106,7 @@ public class Graph {
         throw new IllegalVertexException();
     }
 
-    Vertex getNodeFromName(String name) {
+    Vertex getNodeFromName(String name) throws IllegalVertexException {
         for (Vertex v : knoten) {
             if (v.getName().equals(name)) {
                 return v;

@@ -1,4 +1,4 @@
-package adjazenz;
+package adjazenzHannes;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -14,13 +14,15 @@ public class Main {
 	public static void main(String[] args) {
 			Graph g = new Graph(new File("data.txt"));
 			System.out.println(g);
-			
-			System.out.println("Tiefensuche:");
-			g.tiefensuche("A");
-			g.clearPath();
-			System.out.println("Breitensuche:");
+			System.out.print("Breitensuche: ");
 			g.breitensuche("A");		
+			System.out.println();
 			g.clearPath();
+			System.out.print("Tiefensuche: ");
+			g.tiefensuche("A");
+			System.out.println();
+			g.clearPath();
+
 		
 	}
 }

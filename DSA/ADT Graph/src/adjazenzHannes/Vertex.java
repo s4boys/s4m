@@ -1,17 +1,19 @@
-package adjazenz;
+package adjazenzHannes;
 
 import java.util.ArrayList;
 
 public class Vertex {
-	private static int counter=0;
+	private static int counter=1;
+	
 	private int id;
 	private String name;
-	private boolean visited = false;
+	private boolean visited;
 	private ArrayList<Edge> neighbours;
 	
 	public Vertex(String name) {
-		this.id = ++counter;
+		this.id = counter++;
 		this.name = name;
+		this.visited= false;
 		neighbours = new ArrayList<>();
 	}
 	
