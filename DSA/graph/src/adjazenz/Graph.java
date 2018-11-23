@@ -1,4 +1,4 @@
-package adjazenzHannes;
+package adjazenz;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -6,17 +6,20 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
 
 public class Graph {
+    HashMap<Vertex,ArrayList<Edge>> knoten;
 
-    ArrayList<Vertex> knoten;
+//    ArrayList<Vertex> knoten;
     int size;
 
     public Graph(File data) {
         ArrayList<String> lines = new ArrayList<>();
-        this.knoten = new ArrayList<>();
+//        this.knoten = new ArrayList<>();
+        this.knoten = new HashMap<>();
         String line;
         BufferedReader br = null;
         try {
@@ -38,25 +41,26 @@ public class Graph {
         }
         String[] nodeNames = lines.remove(0).split(", ");
         for (String name : nodeNames) {
-            knoten.add(new Vertex(name));
+            knoten.put(new Vertex(name),new ArrayList<Edge>());
         }
         for (String s : lines) {
             String[] array = s.split(" ");
             Vertex source = getNodeFromId(Integer.parseInt(array[0]));
             Vertex destination = getNodeFromId(Integer.parseInt(array[1]));
             Double d = Double.parseDouble(array[2]);
-            source.addNeighbour(new Edge(destination, d));
-            destination.addNeighbour(new Edge(source,d));
+            knoten.get(source).add(new Edge(destination, d));
+            knoten.get(destination).add(new Edge(source, d));
+//            source.addNeighbour(new Edge(destination, d));
+//            destination.addNeighbour(new Edge(source,d));
         }
     }
 
     public int getGrad(String knotenname) {
-        Vertex v = getNodeFromName(knotenname);
-        return v.getNeighbours().size();
+        return knoten.get(getNodeFromName(knotenname)).size();
     }
 
     boolean isEulerGraph() {
-        for (Vertex v : knoten) {
+        for (Vertex v : knoten.keySet()) {
             if (getGrad(v.getName()) % 2 != 0) {
                 return false;
             }
@@ -65,7 +69,7 @@ public class Graph {
     }
 
     public void clearPath() {
-        for (Vertex v : knoten) {
+        for (Vertex v : knoten.keySet()) {
             v.setVisited(false);
         }
     }
@@ -74,7 +78,7 @@ public class Graph {
         Vertex currentVertex = getNodeFromName(name);
         currentVertex.setVisited(true);
         System.out.print(name + " ");
-        for (Edge e : currentVertex.getNeighbours()) {
+        for (Edge e : knoten.get(currentVertex)) {
             if (!e.getDestination().isVisited()) {
                 tiefensuche(e.getDestination().getName());
             }
@@ -89,7 +93,7 @@ public class Graph {
             Vertex v = q.remove();
             v.setVisited(true);
             System.out.print(v.getName() + " ");
-            for (Edge e : v.getNeighbours()) {
+            for (Edge e : knoten.get(v)){
                 if (!e.getDestination().isVisited() && !q.contains(e.getDestination())) {
                     q.add(e.getDestination());
                 }
@@ -98,7 +102,7 @@ public class Graph {
     }
 
     Vertex getNodeFromId(int id) throws IllegalVertexException {
-        for (Vertex v : knoten) {
+        for (Vertex v : knoten.keySet()) {
             if (v.getId() == id) {
                 return v;
             }
@@ -107,7 +111,7 @@ public class Graph {
     }
 
     Vertex getNodeFromName(String name) throws IllegalVertexException {
-        for (Vertex v : knoten) {
+        for (Vertex v : knoten.keySet()) {
             if (v.getName().equals(name)) {
                 return v;
             }
@@ -118,9 +122,9 @@ public class Graph {
     @Override
     public String toString() {
         String s = "";
-        for (Vertex v : knoten) {
+        for (Vertex v : knoten.keySet()) {
             s += "Neighbours of " + v.getId() + ": ";
-            for (Edge e : v.getNeighbours()) {
+            for (Edge e : knoten.get(v)){
                  s+= e.getDestination().getId() + "(d=" + e.getDistance() + "), ";
             }
             s += "\n";
