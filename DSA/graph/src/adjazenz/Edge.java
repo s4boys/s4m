@@ -1,4 +1,4 @@
-package adjazenzHannes;
+package adjazenz;
 
 public class Edge {
 
