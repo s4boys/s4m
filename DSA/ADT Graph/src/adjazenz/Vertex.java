@@ -40,19 +40,19 @@ public class Vertex {
 		this.visited = visited;
 	}
 	
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		Vertex other = (Vertex) obj;
-		return other.name.equals(this.name);
-	}
+//	@Override
+//	public int hashCode() {
+//		final int prime = 31;
+//		int result = 1;
+//		result = prime * result + ((name == null) ? 0 : name.hashCode());
+//		return result;
+//	}
+//
+//	@Override
+//	public boolean equals(Object obj) {
+//		Vertex other = (Vertex) obj;
+//		return other.name.equals(this.name);
+//	}
 	
 	
 }

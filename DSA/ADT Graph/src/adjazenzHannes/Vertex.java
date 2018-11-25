@@ -1,4 +1,4 @@
-package adjazenz;
+package adjazenzHannes;
 
 import java.util.ArrayList;
 
