@@ -1,4 +1,4 @@
-package nodesneu;
+package regular;
 
 public class Vertex {
 	static int counter=0;

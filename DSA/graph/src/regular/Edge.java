@@ -1,4 +1,4 @@
-package nodes;
+package regular;
 
 public class Edge {
 
