@@ -5,7 +5,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 import java.io.InputStream;
-
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 
@@ -18,8 +19,10 @@ import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import adjazenz.*;
+
 /**
- * Die Klasse OsmParser implementiert einen Rahmen für einen Parser von 
+ * Die Klasse OsmParser implementiert einen Rahmen fï¿½r einen Parser von 
  * OpenStreetMap Daten. Als Parser wird ein StaXParser verwendet.
  * 
  * @author coors
@@ -29,6 +32,8 @@ public class OsmParser {
 
 	// Instance
 	public static OsmParser parser = null;
+	public static Graph g = null;
+	HashMap<Vertex, ArrayList<Edge>> knoten;
 
 	/**
 	 * Singleton
@@ -43,8 +48,8 @@ public class OsmParser {
 	}
 
 	/**
-	 * Liest die osm Datei, zählt die Knoten und die Knoten, die zu Straßen gehören <tag k="highway" .../> .
-	 * Grundlage für die Weiterentwicklung eines osm Parsers.
+	 * Liest die osm Datei, zï¿½hlt die Knoten und die Knoten, die zu Straï¿½en gehï¿½ren <tag k="highway" .../> .
+	 * Grundlage fï¿½r die Weiterentwicklung eines osm Parsers.
 	 * 
 	 * 
 	 * @param fileName
@@ -53,6 +58,7 @@ public class OsmParser {
 	 */
 	public void parse(String InputFileName) {
 		try {
+			this.knoten = new HashMap<>();
 			// First, create a new XMLInputFactory
 			XMLInputFactory inputFactory = XMLInputFactory.newInstance();
 			// Setup a new eventReader
@@ -78,12 +84,13 @@ public class OsmParser {
 			              Attribute attribute = attributes.next();
 			              if (attribute.getName().toString().equals("id")) {
 			                nodeid=attribute.getValue();
+			                knoten.put(new Vertex(nodeid), new ArrayList<Edge>());
 			              }
 
 			            }
 
 					}
-					else if (startElement.getName().getLocalPart() == "tag"){
+					else if (startElement.getName().getLocalPart() == "way"){
 						Iterator<Attribute> attributes = startElement.getAttributes();
 			            while (attributes.hasNext()) {
 			              Attribute attribute = attributes.next();

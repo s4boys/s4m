@@ -19,7 +19,6 @@ public class OsmParserTest {
 		try {
 			
 			parser.parse("map.osm");
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
