@@ -18,6 +18,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 
+
 /**
  * Die Klasse OsmParser implementiert einen Rahmen f�r einen Parser von
  * OpenStreetMap Daten. Als Parser wird ein StaXParser verwendet.
@@ -30,6 +31,7 @@ public class OsmParser {
 	// Instance
 	public static OsmParser parser = null;
 	public static Graph g = null;
+	
 	HashMap<Vertex, ArrayList<Edge>> knoten;
 
 	/**
@@ -68,6 +70,7 @@ public class OsmParser {
 			String nodeid = null;
 			double lat = 0;
 			double lon = 0;
+			Vertex pre = null; 
 			while (eventReader.hasNext()) {
 				XMLEvent event = eventReader.nextEvent();
 
@@ -83,6 +86,7 @@ public class OsmParser {
 							Attribute attribute = attributes.next();
 							if (attribute.getName().toString().equals("id")) {
 								nodeid = attribute.getValue();
+								System.out.println(nodeid);
 							}
 							if (attribute.getName().toString().equals("lat")) {
 								lat = Double.parseDouble(attribute.getValue());
@@ -90,23 +94,41 @@ public class OsmParser {
 							}
 							if (attribute.getName().toString().equals("lon")) {
 								lon = Double.parseDouble(attribute.getValue());
-								knoten.put(new Vertex(nodeid, lat, lon), new ArrayList<Edge>());
+								System.out.println(lon);
 							}
-							
 						}
-
-					} else if (startElement.getName().getLocalPart() == "way") {
+						knoten.put(new Vertex(nodeid, lat, lon), new ArrayList<Edge>());
+						System.out.println();
+						//setze boolean isWay, wenn true dann solange bis kein way mehr ist vorgänger speichern und dann bis keine knoten mehr im weg sind
+//					} else if (startElement.getName().getLocalPart() == "way") {
+//						isWay = true;
+					} else if (startElement.getName().getLocalPart() == "nd")  {
 						Iterator<Attribute> attributes = startElement.getAttributes();
 						while (attributes.hasNext()) {
 							Attribute attribute = attributes.next();
-							if (attribute.getName().toString().equals("k")) {
-								if (attribute.getValue().equals("highway")) {
-									highways++;
+							if (attribute.getName().toString().equals("ref")) {
+								Vertex current = getNodeFromName(attribute.getValue());
+								if(pre != null) {
+									double distance = getDistance(pre.getLat(), pre.getLon(), current.getLat(), current.getLon());
+									knoten.get(current).add(new Edge(pre, distance));
+									knoten.get(pre).add(new Edge(current, distance));
 								}
+								pre = current;
 							}
-
 						}
-					}
+					
+					} 
+						
+//						Iterator<Attribute> attributes = startElement.getAttributes();
+//						while (attributes.hasNext()) {
+//							Attribute attribute = attributes.next();
+//							if (attribute.getName().toString().equals("k")) {
+//								if (attribute.getValue().equals("highway")) {
+//									highways++;
+//								}
+//							}
+//						}
+					
 
 				} else if (event.isEndElement()) {
 					EndElement endElement = event.asEndElement();
@@ -114,11 +136,18 @@ public class OsmParser {
 					if (endElement.getName().getLocalPart() == ("node")) {
 						// to something
 					}
+					if (endElement.getName().getLocalPart() == ("way")) {
+						// to something
+						pre = null;
+					}
+					if (endElement.getName().getLocalPart() == ("osm")) {
+						g = new Graph(knoten);
+//						System.out.println("Graph" + g);
+						g.shortestPath(getNodeFromName("130110210"), getNodeFromName("130254468"));
+					}
 				}
 
 			}
-			System.out.println("Number of nodes=" + nodes);
-			System.out.println("Number of highway nodes=" + highways);
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -138,5 +167,14 @@ public class OsmParser {
 		return distance;
 				
 	}
+	
+	Vertex getNodeFromName(String name) throws IllegalVertexException {
+        for (Vertex v : knoten.keySet()) {
+            if (v.getName().equals(name)) {
+                return v;
+            }
+        }
+        throw new IllegalVertexException();
+    }
 
 }

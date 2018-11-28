@@ -18,7 +18,7 @@ public class OsmParserTest {
 		long start = System.currentTimeMillis();
 		try {
 			
-			parser.parse("map.osm");
+			parser.parse("map2.osm");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

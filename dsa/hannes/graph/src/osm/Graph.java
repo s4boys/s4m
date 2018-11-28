@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.Set;
 
@@ -21,8 +22,8 @@ public class Graph {
 //    ArrayList<Vertex> knoten;
     int size;
 
-    public Graph() {
-        this.knoten = new HashMap<>();
+    public Graph(HashMap<Vertex, ArrayList<Edge>> knoten) {
+        this.knoten = knoten;
     }
 
     public int getGrad(String knotenname) {
@@ -123,10 +124,14 @@ public class Graph {
                 }
             }
         }
-        System.out.println("Shortest path from " + start.getName() + " to " + destination.getName() + " is " + distances[destination.getId() - 1]);
+        System.out.println(knownNodes);
+        System.out.println("Shortest path from " + start.getName() + " to " + destination.getName() + " is " + distances[destination.getId() - 1] + "m");
     }
 
     public int getSize() {
+    	for (Entry<Vertex, ArrayList<Edge>> v : knoten.entrySet()) {
+    		size++;
+    	}
         return size;
     }
 
