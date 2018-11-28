@@ -21,7 +21,7 @@ public class Main {
 			//sehr ineffizient, aber sonst werden nicht unbedingt alle abgelaufen
 			for(int i = 2; i < 12; i++) {
 				System.out.print("From A to " + g.getNodeFromId(i) + ": ");
-				g.shortestPath(g, g.getNodeFromId(1), g.getNodeFromId(i));	
+				g.shortestPath(g.getNodeFromId(1), g.getNodeFromId(i));	
 			}
 			
 	}

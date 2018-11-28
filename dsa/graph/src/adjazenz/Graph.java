@@ -154,7 +154,7 @@ public class Graph {
 				}
 			}
 		}
-		System.out.println(L[ziel.getId()-1]);
+		System.out.println("Shortest path from " + start.getName() + " to " + ziel.getName() + " is " + L[ziel.getId() - 1]);
 	}
 	
 	public Vertex getMin(Set<Vertex> M2, double[] zahlen) {
