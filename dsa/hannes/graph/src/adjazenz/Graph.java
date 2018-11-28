@@ -16,7 +16,7 @@ import java.util.Queue;
 import java.util.Set;
 
 public class Graph {
-    HashMap<Vertex,ArrayList<Edge>> knoten;
+    HashMap<Vertex, ArrayList<Edge>> knoten;
 
 //    ArrayList<Vertex> knoten;
     int size;
@@ -46,7 +46,7 @@ public class Graph {
         }
         String[] nodeNames = lines.remove(0).split(", ");
         for (String name : nodeNames) {
-            knoten.put(new Vertex(name),new ArrayList<Edge>());
+            knoten.put(new Vertex(name), new ArrayList<Edge>());
         }
         for (String s : lines) {
             String[] array = s.split(" ");
@@ -98,7 +98,7 @@ public class Graph {
             Vertex v = q.remove();
             v.setVisited(true);
             System.out.print(v.getName() + " ");
-            for (Edge e : knoten.get(v)){
+            for (Edge e : knoten.get(v)) {
                 if (!e.getDestination().isVisited() && !q.contains(e.getDestination())) {
                     q.add(e.getDestination());
                 }
@@ -123,64 +123,68 @@ public class Graph {
         }
         throw new IllegalVertexException();
     }
-    
-    void shortestPath(Graph g, Vertex start, Vertex ziel) {
-		Set<Vertex> M1 = new HashSet<>();
-		Set<Vertex> M2 = new HashSet<>();
-		double[] L = new double[11];
-		for(Map.Entry<Vertex, ArrayList<Edge>> e : knoten.entrySet()) {
-			Vertex v = (Vertex) e.getKey();
-			L[v.getId()-1] = Integer.MAX_VALUE;
-		}
-		L[start.getId()-1] = 0;
-		for (Edge e : knoten.get(start)) {
-			 L[e.getDestination().getId()-1] = e.getDistance();
-			 M2.add(e.getDestination());
-		}
-		while(!M2.isEmpty() && !M1.contains(ziel)) {
-			Vertex recentNode = getMin(M2, L);
-			M1.add(recentNode);
-			M2.remove(recentNode);
-			for (Edge e : knoten.get(recentNode)) {
-				int newId = e.getDestination().getId()-1;
-				double newWeight = L[recentNode.getId()-1] + e.distance;
-				if(L[newId] == Integer.MAX_VALUE) {
-					M2.add(e.getDestination());
-					L[newId] = newWeight;
-				} else {
-					if (L[newId] >= newWeight) {
-						L[newId] = newWeight;
-					}
-				}
-			}
-		}
-		System.out.println(L[ziel.getId()-1]);
-	}
-	
-	public Vertex getMin(Set<Vertex> M2, double[] zahlen) {
-		Vertex min = M2.stream().findFirst().get();
-		Iterator<Vertex> setIterator = M2.iterator();
-        while(setIterator.hasNext()){
-        	Vertex v = setIterator.next();
-            if(zahlen[v.getId()-1] < zahlen[min.getId()-1]) {
-            	min = v;
+
+    void shortestPath(Vertex start, Vertex destination) {
+        Set<Vertex> knownNodes = new HashSet<>();
+        Set<Vertex> remainingNodes = new HashSet<>();
+        double[] distances = new double[this.getSize()];
+// Würde theoretisch auch reichen
+//		for(int i = 0; i < distances.length; i++) {
+//		    distances[i] = Double.MAX_VALUE;
+//		}
+        for (Vertex v : knoten.keySet()) {
+            distances[v.getId() - 1] = Double.MAX_VALUE;
+        }
+        distances[start.getId() - 1] = 0;
+
+        for (Edge e : knoten.get(start)) {
+            distances[e.getDestination().getId() - 1] = e.getDistance();
+            remainingNodes.add(e.getDestination());
+        }
+        while (!remainingNodes.isEmpty() && !knownNodes.contains(destination)) {
+            Vertex nextNode = getClosestV(remainingNodes, distances);
+            knownNodes.add(nextNode);
+            remainingNodes.remove(nextNode);
+            for(Edge e : knoten.get(nextNode)) {
+                int nextId = e.getDestination().getId() - 1;
+                double nextWeight = distances[nextNode.getId() - 1] + e.distance;
+                if (distances[nextId] == Double.MAX_VALUE) {
+                    remainingNodes.add(e.getDestination());
+                    distances[nextId] = nextWeight;
+                } else {
+                    if (distances[nextId] >= nextWeight) {
+                        distances[nextId] = nextWeight;
+                    }
+                }
             }
         }
+        System.out.println("Shortest path from " + start.getName() + " to " + destination.getName() + " is " + distances[destination.getId() - 1]);
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public Vertex getClosestV(Set<Vertex> remainingNodes, double[] distances) {
+		Vertex min = remainingNodes.stream().findFirst().get();
+		for (Vertex v : remainingNodes) {
+		    if(distances[v.getId()-1] < distances[min.getId()-1]) {
+		        min = v;
+		    }
+		}
 		return min;
 	}
 
-    
-    
     @Override
     public String toString() {
         String s = "";
         for (Vertex v : knoten.keySet()) {
             s += "Neighbours of " + v.getId() + ": ";
-            for (Edge e : knoten.get(v)){
-                 s+= e.getDestination().getId() + "(d=" + e.getDistance() + "), ";
+            for (Edge e : knoten.get(v)) {
+                s += e.getDestination().getId() + "(d=" + e.getDistance() + "), ";
             }
             s += "\n";
-        }        
+        }
         return size + "\n" + knoten + "\n" + s;
     }
 
