@@ -93,7 +93,7 @@ public class Graph {
     void shortestPath(Vertex start, Vertex destination) {
         Set<Vertex> knownNodes = new HashSet<>();
         Set<Vertex> remainingNodes = new HashSet<>();
-        double[] distances = new double[this.getSize()];
+        double[] distances = new double[knoten.size()];
 // Würde theoretisch auch reichen
 //		for(int i = 0; i < distances.length; i++) {
 //		    distances[i] = Double.MAX_VALUE;
@@ -126,13 +126,6 @@ public class Graph {
         }
         System.out.println(knownNodes);
         System.out.println("Shortest path from " + start.getName() + " to " + destination.getName() + " is " + distances[destination.getId() - 1] + "m");
-    }
-
-    public int getSize() {
-    	for (Entry<Vertex, ArrayList<Edge>> v : knoten.entrySet()) {
-    		size++;
-    	}
-        return size;
     }
 
     public Vertex getClosestV(Set<Vertex> remainingNodes, double[] distances) {
