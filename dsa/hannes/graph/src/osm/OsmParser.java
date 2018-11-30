@@ -65,11 +65,10 @@ public class OsmParser {
 			InputStream in = new FileInputStream(InputFileName);
 			XMLEventReader eventReader = inputFactory.createXMLEventReader(in);
 			// read the XML document
-			int nodes = 0;
-			int highways = 0;
 			String nodeid = null;
 			double lat = 0;
 			double lon = 0;
+			int nodes = 0;
 			Vertex pre = null; 
 			while (eventReader.hasNext()) {
 				XMLEvent event = eventReader.nextEvent();
@@ -118,18 +117,6 @@ public class OsmParser {
 						}
 					
 					} 
-						
-//						Iterator<Attribute> attributes = startElement.getAttributes();
-//						while (attributes.hasNext()) {
-//							Attribute attribute = attributes.next();
-//							if (attribute.getName().toString().equals("k")) {
-//								if (attribute.getValue().equals("highway")) {
-//									highways++;
-//								}
-//							}
-//						}
-					
-
 				} else if (event.isEndElement()) {
 					EndElement endElement = event.asEndElement();
 
@@ -141,9 +128,7 @@ public class OsmParser {
 						pre = null;
 					}
 					if (endElement.getName().getLocalPart() == ("osm")) {
-						g = new Graph(knoten);
-//						System.out.println("Graph" + g);
-						g.shortestPath(getNodeFromName("130110210"), getNodeFromName("130254468"));
+						System.out.println("Nodes: " +nodes);
 					}
 				}
 
@@ -154,6 +139,10 @@ public class OsmParser {
 		} catch (XMLStreamException e) {
 			e.printStackTrace();
 		}
+		
+		g = new Graph(knoten);
+//		System.out.println("Graph" + g);
+		g.shortestPath(getNodeFromName("269262472"), getNodeFromName("686399558"));
 
 		return;
 	}

@@ -94,6 +94,7 @@ public class Graph {
         Set<Vertex> knownNodes = new HashSet<>();
         Set<Vertex> remainingNodes = new HashSet<>();
         double[] distances = new double[knoten.size()];
+//        System.out.println(knoten.size());
 // Würde theoretisch auch reichen
 //		for(int i = 0; i < distances.length; i++) {
 //		    distances[i] = Double.MAX_VALUE;
@@ -109,23 +110,27 @@ public class Graph {
         }
         while (!remainingNodes.isEmpty() && !knownNodes.contains(destination)) {
             Vertex nextNode = getClosestV(remainingNodes, distances);
+            System.out.println(nextNode.getName());
             knownNodes.add(nextNode);
             remainingNodes.remove(nextNode);
             for(Edge e : knoten.get(nextNode)) {
                 int nextId = e.getDestination().getId() - 1;
+                System.out.println(nextId);
                 double nextWeight = distances[nextNode.getId() - 1] + e.distance;
                 if (distances[nextId] == Double.MAX_VALUE) {
                     remainingNodes.add(e.getDestination());
                     distances[nextId] = nextWeight;
                 } else {
-                    if (distances[nextId] >= nextWeight) {
+                    if (distances[nextId] >= nextWeight) { 
                         distances[nextId] = nextWeight;
                     }
                 }
             }
         }
         System.out.println(knownNodes);
-        System.out.println("Shortest path from " + start.getName() + " to " + destination.getName() + " is " + distances[destination.getId() - 1] + "m");
+        double kmDistance = distances[destination.getId() - 1];
+        double mDistance = kmDistance * 1000;
+        System.out.println("Shortest path from " + start.getName() + " to " + destination.getName() + " is " + kmDistance + "km --> " + mDistance + "m");
     }
 
     public Vertex getClosestV(Set<Vertex> remainingNodes, double[] distances) {
