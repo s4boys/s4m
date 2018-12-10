@@ -18,11 +18,12 @@ public class Main {
 			System.out.println();
 			g.clearPath();
 			System.out.println("\nShortest Path");
+			g.shortestPath(g.getNodeFromId(1), g.getNodeFromId(11));  
 			//sehr ineffizient, aber sonst werden nicht unbedingt alle abgelaufen
-			for(int i = 2; i < 12; i++) {
-				System.out.print("From A to " + g.getNodeFromId(i) + ": ");
-				g.shortestPath(g.getNodeFromId(1), g.getNodeFromId(i));	
-			}
+//			for(int i = 2; i < 12; i++) {
+//				System.out.print("From A to " + g.getNodeFromId(i) + ": ");
+//				g.shortestPath(g.getNodeFromId(1), g.getNodeFromId(i));	
+//			}
 			
 	}
 }

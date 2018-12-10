@@ -17,12 +17,13 @@ import java.util.Queue;
 import java.util.Set;
 
 public class Graph {
-    HashMap<Vertex, ArrayList<Edge>> knoten;
+//    HashMap<Vertex, ArrayList<Edge>> knoten;
+    HashMap<Vertex, HashSet<Edge>> knoten;
 
 //    ArrayList<Vertex> knoten;
     int size;
 
-    public Graph(HashMap<Vertex, ArrayList<Edge>> knoten) {
+    public Graph(HashMap<Vertex, HashSet<Edge>> knoten) {
         this.knoten = knoten;
     }
 
@@ -105,17 +106,19 @@ public class Graph {
         distances[start.getId() - 1] = 0;
 
         for (Edge e : knoten.get(start)) {
+            
             distances[e.getDestination().getId() - 1] = e.getDistance();
             remainingNodes.add(e.getDestination());
         }
         while (!remainingNodes.isEmpty() && !knownNodes.contains(destination)) {
             Vertex nextNode = getClosestV(remainingNodes, distances);
-            System.out.println(nextNode.getName());
+//            System.out.println(nextNode.getName());
             knownNodes.add(nextNode);
             remainingNodes.remove(nextNode);
             for(Edge e : knoten.get(nextNode)) {
                 int nextId = e.getDestination().getId() - 1;
-                System.out.println(nextId);
+//                System.out.println("nextID: " + nextId);
+//                double nextWeight = distances[nextNode.getId()] + e.distance;
                 double nextWeight = distances[nextNode.getId() - 1] + e.distance;
                 if (distances[nextId] == Double.MAX_VALUE) {
                     remainingNodes.add(e.getDestination());

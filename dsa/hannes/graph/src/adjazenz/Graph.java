@@ -128,21 +128,17 @@ public class Graph {
         Set<Vertex> knownNodes = new HashSet<>();
         Set<Vertex> remainingNodes = new HashSet<>();
         double[] distances = new double[this.getSize()];
-// Würde theoretisch auch reichen
-//		for(int i = 0; i < distances.length; i++) {
-//		    distances[i] = Double.MAX_VALUE;
-//		}
         for (Vertex v : knoten.keySet()) {
             distances[v.getId() - 1] = Double.MAX_VALUE;
         }
         distances[start.getId() - 1] = 0;
-
         for (Edge e : knoten.get(start)) {
             distances[e.getDestination().getId() - 1] = e.getDistance();
             remainingNodes.add(e.getDestination());
         }
         while (!remainingNodes.isEmpty() && !knownNodes.contains(destination)) {
             Vertex nextNode = getClosestV(remainingNodes, distances);
+            System.out.println(nextNode.getName());
             knownNodes.add(nextNode);
             remainingNodes.remove(nextNode);
             for(Edge e : knoten.get(nextNode)) {
