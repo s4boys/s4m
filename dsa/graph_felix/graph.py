@@ -1,5 +1,6 @@
 from collections import defaultdict
 import sys
+import osm_xml_parser as oxp
 
 class Graph:
     def __init__(self):
@@ -20,6 +21,13 @@ class Graph:
     
     def get_edges(self):
         return(self.edges)
+
+    def add_path(self, path):
+        for index, node in enumerate(path):
+            if node not in self.nodes:
+                self.add_node(node)
+            if index is not 0:
+                self.add_edge(node, path[index-1], 1) 
     
     def toString(self):
         print(self.get_nodes())
@@ -59,4 +67,9 @@ class Graph:
 
             x = min(unvisited, key=unvisited.get)
             self.dijkstra(x,dest,visited,distances,predecessors)
-    
+
+    @classmethod
+    def from_osm(cls, filename):
+        instance = cls()
+        (_, graph) = oxp.osm_xml_parser(filename, instance)
+        return graph    
