@@ -1,4 +1,3 @@
-import networkx as nx
 import xml.etree.ElementTree as xml
 
 def osm_xml_parser(path_to_file, graph):
@@ -8,14 +7,13 @@ def osm_xml_parser(path_to_file, graph):
         path_to_file - The relative path of the file to be parsed.
         graph - graph object in which the data should be stored
     Returns:
-        G - the created graph in wx format
         graph - The created graph our custom format
     """
 
     # Parse the xml structure and initialize variables.
     root = xml.parse(path_to_file).getroot()
     node_dict_tmp = {}
-    G = nx.DiGraph()
+    # G = nx.DiGraph()
 
     # Allow these types of streets to be represented in the network by an edge.
     way_types = ["motorway", "trunk", "primary", "secondary", "tertiary", "unclassified", "residential", "service",
@@ -51,31 +49,35 @@ def osm_xml_parser(path_to_file, graph):
             if insert:
                 if max_speed_v is None:
                     # print(way_tmp)
-                    G.add_path(way_tmp)
+                    # G.add_path(way_tmp)
                     graph.add_path(way_tmp)
                     if not directed:
-                        G.add_path(list(reversed(way_tmp)))
+                        # G.add_path(list(reversed(way_tmp)))
+                        graph.add_path(list(reversed(way_tmp)))
                 else:
-                    G.add_path(way_tmp, max_speed=max_speed_v)
+                    # G.add_path(way_tmp, max_speed=max_speed_v)
                     graph.add_path(way_tmp)
                     if not directed:
-                        G.add_path(list(reversed(way_tmp)), max_speed=max_speed_v)
+                        # G.add_path(list(reversed(way_tmp)), max_speed=max_speed_v)
                         graph.add_path(way_tmp)
 
     # Extend the nodes by their geographical coordinates.
-    network_nodes = G.nodes()
-    for child in network_nodes:
-        current_node_coords = node_dict_tmp[child]
-        G.node[child]["coords"] = [float(current_node_coords[0]), float(current_node_coords[1])]
+    # network_nodes = G.nodes()
+    # for child in network_nodes:
+    #     current_node_coords = node_dict_tmp[child]
+    #     G.node[child]["coords"] = [float(current_node_coords[0]), float(current_node_coords[1])]
 
     # Return the generated graph.
-    return (G, graph)
+    # return (G, graph)
+    return graph
 
 if __name__ == "__main__":
     import graph as felixnicograph
     
     empty = felixnicograph.Graph()
-    (nxgraph, ourgraph) = osm_xml_parser("map.osm", empty)
+    # (nxgraph, ourgraph) = osm_xml_parser("map.osm", empty)
+    ourgraph = osm_xml_parser("map.osm", empty)
+
     # print(g.nodes())
     # print(nxgraph.edges())
     # print(ourgraph.get_edges())

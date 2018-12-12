@@ -71,5 +71,5 @@ class Graph:
     @classmethod
     def from_osm(cls, filename):
         instance = cls()
-        (_, graph) = oxp.osm_xml_parser(filename, instance)
+        graph = oxp.osm_xml_parser(filename, instance)
         return graph    
