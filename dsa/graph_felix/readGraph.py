@@ -19,5 +19,5 @@ for i, line in enumerate(infile):
         elif words[1] not in graph.get_nodes():
             graph.add_node(words[1])
         graph.add_edge(int(words[0]),int(words[1]),int(words[2]))
-print(s)
+print(graph.get_nodes())
 graph.dijkstra(1,10)

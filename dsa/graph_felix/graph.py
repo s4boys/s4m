@@ -2,6 +2,8 @@ from collections import defaultdict
 import sys
 import osm_xml_parser as oxp
 
+sys.setrecursionlimit(10000)
+
 class Graph:
     def __init__(self):
         self.nodes = set()

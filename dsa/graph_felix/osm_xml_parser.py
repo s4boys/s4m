@@ -48,7 +48,7 @@ def osm_xml_parser(path_to_file, graph):
                             max_speed_v = None
             if insert:
                 if max_speed_v is None:
-                    # print(way_tmp)
+                    #print(way_tmp)
                     # G.add_path(way_tmp)
                     graph.add_path(way_tmp)
                     if not directed:
@@ -80,5 +80,7 @@ if __name__ == "__main__":
 
     # print(g.nodes())
     # print(nxgraph.edges())
-    # print(ourgraph.get_edges())
+    # print(ourgraph.get_edges()['1469008536'])
+    ourgraph.dijkstra('1502103111', '1052857737')
+    # print(ourgraph.toString())
     # print(ourgraph.get_nodes())
